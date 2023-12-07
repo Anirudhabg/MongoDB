@@ -1,0 +1,68 @@
+To show databse: show dbs 
+
+To create a database: use databaseName
+
+To create a collection: db.createCollection("CollectionName")
+
+To delete a database: db.dropDatabase()
+
+To insert a column: db.collectionName.insertOne({attribute:"value"})
+
+To show the value in a database collection: db.collectionName.find()
+
+To insert many values: db.collectionName.insertMany([{attribute:"value"},{attribute:"value"}])
+
+DataTypes:
+String: "value"
+Integer: 1-...
+Double: 0.0-...
+Boolean: true/false
+Date: new Date() {"YYYY-MM-DD"}->format
+Null: null {no value}
+Arrays: ["value1","value2",...]
+Nested Document: {attribute:"value", attribute,value}
+
+To sort the document: db.collectionName.find().sort({attribute:value})
+value=1: for ascending order
+value=-1: for descending order
+
+To limit the number of document to return to user: db.collectionName.find().limit(number)
+number: number of document to return 
+
+Combining both: db.collectionName.find().sort({attribute:1/-1}).limit(number)
+
+To find a particular value: db.collectionName.find({query},{projection})
+query: attribute:"value" {for multiple values use ","}
+projection: attribute:true/false
+
+To update one value in database: db.collectionName.updateOne({filter},{update})
+filter: attribute:"value", selection criteria
+update: $set:{attribute:"value"} -> $set is used to replace the value , value -> is the new value
+update: $unset:{attribute:"value"} -> $unset is used to delete an attribute
+
+To update many value in database: db.collectionName.updateMany({filter},{update})
+filter: {} ->selects all
+filter:{attribute:{$exists:true/false}} -> $exists checks whether ther is a value or not for a given attribute 
+$exists:false -> selects item that do not exists
+$exists:true -> selects item that does exists
+update: $set:{attribute:"value"} -> $set is used to replace the value , value -> is the new value
+update: $unset:{attribute:"value"} -> $unset is used to delete an attribute
+
+To delete one row in database: db.collectionName.deleteOne({attribute:"value"})
+To delete many row in database: db.collectionName.deleteMany({attribute:"value"})
+Usage of $exists in delete: db.collectionName.deleteMany({attribute:{$exists:true/false}})
+
+To compare in database:
+
+db.collectionName.find(attribute:{$lt:value})
+db.collectionName.find(attribute:{$lte:value})
+db.collectionName.find(attribute:{$gt:value})
+db.collectionName.find(attribute:{$gte:value})
+
+$lt: less than
+$lte: less than or equal to
+$gt: greater than
+$gte: greater than or equal to
+
+To return one of the matching value: db.collectionName.find({attribute:{$in:["value1","value2",...]}})
+To return that is not in matching values: db.collectionName.find({attribute:{$nin:["value1","value2",...]}})
