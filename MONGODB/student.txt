@@ -1,17 +1,22 @@
 test> show dbs
     admin    40.00 KiB
     local    40.00 KiB
+    ===================================================================================================
 test> use school
     switched to db school
 school> db.createCollection("student")
     { ok: 1 }
 school> db.dropDatabase()
     { ok: 1, dropped: 'school' }
+    ===================================================================================================
+                            Inserting one student to collection
 school> db.student.insertOne({name:"Harry",age:20,gpa:3.1})
     {
         acknowledged: true,
         insertedId: ObjectId('656ff928a31b3cc00b1074fa')
     }
+    ===================================================================================================
+                            Retrieve information about collection 
 school> db.student.find()
     [
         {
@@ -21,6 +26,8 @@ school> db.student.find()
             gpa: 3.1
         }
     ]
+    ===================================================================================================
+                            Inserting many students at once
 school> db.student.insertMany([{name:"Harry2",age:21,gpa:3.1},{name:"Harry3",age:22,gpa:31}])
     {
         acknowledged: true,
@@ -30,6 +37,8 @@ school> db.student.insertMany([{name:"Harry2",age:21,gpa:3.1},{name:"Harry3",age
             '1': ObjectId('656ff9fda31b3cc00b1074fc')
         }
     }
+    ===================================================================================================
+                            Retrieve information about collection 
 school> db.student.find()
     [
         {
@@ -51,6 +60,8 @@ school> db.student.find()
             gpa: 31
         }
     ]
+    ===================================================================================================
+                            Sorting students in ascending order
 school> db.student.find().sort({gpa:1})
     [
         { 
@@ -76,6 +87,8 @@ school> db.student.find().sort({gpa:1})
             gpa: 31
         }
     ]
+    ===================================================================================================
+                        Limiting the number of Retrievals to one
 school> db.student.find().limit(1)
     [
         {
@@ -85,6 +98,8 @@ school> db.student.find().limit(1)
             gpa: 3.1
         }
     ]
+    ===================================================================================================
+    To Retrieve student details of student with most gpa (sort it in descending order and limit it to one)
 school> db.student.find().sort({gpa:-1}).limit(1)
     [
         {
@@ -94,6 +109,8 @@ school> db.student.find().sort({gpa:-1}).limit(1)
             gpa: 31
         }
     ]
+    ===================================================================================================
+    To Retrieve student details of student with less/no gpa(sort it in ascending order and limit it to one)
 school> db.student.find().sort({gpa:1}).limit(1)
     [ 
         { 
@@ -101,6 +118,8 @@ school> db.student.find().sort({gpa:1}).limit(1)
             name: 'Harry4' 
         } 
     ]
+    ===================================================================================================
+                            To return all names of students in collection
 school> db.student.find({},{_id:false,name:true})
     [
         { name: 'Harry' },
@@ -108,6 +127,8 @@ school> db.student.find({},{_id:false,name:true})
         { name: 'Harry3' },
         { name: 'Harry4' }
     ]
+    ===================================================================================================
+                            To return students with age 22
 school> db.student.find({age:22},{})
 school> db.student.find({age:22})
     [
@@ -118,12 +139,16 @@ school> db.student.find({age:22})
             gpa: 31
         }
     ]
+    ===================================================================================================
+                            To return name of student with age 22
 school> db.student.find({age:22},{_id:false,name:true})
     [ 
         { 
             name: 'Harry3' 
         } 
     ]
+    ===================================================================================================
+                            To update student named Harry4 with age 22
 school> db.student.updateOne({name:"Harry4"},{$set:{age:22}})        
     {
         acknowledged: true,
@@ -132,6 +157,8 @@ school> db.student.updateOne({name:"Harry4"},{$set:{age:22}})
         modifiedCount: 1,
         upsertedCount: 0
     }
+    ===================================================================================================
+                            To return details of student named Harry4
 school> db.student.find({name:"Harry4"})
     [
         {
@@ -140,6 +167,8 @@ school> db.student.find({name:"Harry4"})
             age: 22
         }
     ]
+    ===================================================================================================
+                                To update value using id 
 school> db.student.updateOne({_id:ObjectId('656ffd8da31b3cc00b1074fd')},{$set:{gpa:4.1}})
     {
         acknowledged: true,
@@ -148,6 +177,8 @@ school> db.student.updateOne({_id:ObjectId('656ffd8da31b3cc00b1074fd')},{$set:{g
         modifiedCount: 1,
         upsertedCount: 0
     }
+    ===================================================================================================
+                                To return value using id
 school> db.student.find({_id: ObjectId('656ffd8da31b3cc00b1074fd')}) 
     [
         {
@@ -157,6 +188,8 @@ school> db.student.find({_id: ObjectId('656ffd8da31b3cc00b1074fd')})
             gpa: 4.1
         }
     ]
+    ===================================================================================================
+                        To update many values in collection (update fullTIme to false)
 school> db.student.updateMany({},{$set:{fullTime:false}})
     {
         acknowledged: true,
@@ -165,6 +198,8 @@ school> db.student.updateMany({},{$set:{fullTime:false}})
         modifiedCount: 4,
         upsertedCount: 0
     }
+    ===================================================================================================
+                    To update the value of fullTime of student named Harry4 to true
 school> db.student.updateOne({name:"Harry4"},{$unset:{fullTime:""}})
     {
         acknowledged: true,
@@ -173,8 +208,7 @@ school> db.student.updateOne({name:"Harry4"},{$unset:{fullTime:""}})
         modifiedCount: 1,
         upsertedCount: 0
     }
-school> db.student.updateMany({fullTime:{$exists:true}},{$set:{fullTi
-fullTime:true}})
+school> db.student.updateMany({fullTime:{$exists:true}},{$set:{fullTime:true}})
     {
         acknowledged: true,
         insertedId: null,
